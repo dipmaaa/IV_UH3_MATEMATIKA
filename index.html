@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ulangan Harian Matematika Kelas IV</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eef2f7;color:#172033;line-height:1.6}
+.container{max-width:950px;margin:25px auto;padding:0 15px}
+.header{background:#102a43;border-radius:14px;overflow:hidden;margin-bottom:20px;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.brand{display:flex;align-items:center;justify-content:center;gap:25px;padding:18px 25px;border-bottom:4px solid #d4af37}
+.logo-img{width:72px;height:72px;object-fit:contain;flex-shrink:0}
+.header-title{text-align:center;flex:1;color:white}
+.header-title h1{margin:0;font-size:22px;letter-spacing:.5px}
+.header-title h2{margin:6px 0;font-size:18px}
+.header-title p{margin:0;font-size:14px;color:#e8edf3}
+.card{background:white;border-radius:16px;padding:25px;margin-bottom:20px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
+.welcome{text-align:center}
+.welcome h2{margin-top:0;color:#102a43}
+#welcomeName{color:#1769aa}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:20px 0}
+.info-box{background:#f3f6fa;border:1px solid #e1e7ee;border-radius:12px;padding:15px;text-align:center}
+.info-box strong{display:block;font-size:18px;color:#102a43}
+.info-box span{font-size:13px;color:#666}
+.form-group{margin-bottom:17px}
+.form-group label{display:block;font-weight:bold;margin-bottom:7px}
+input,select,textarea{width:100%;padding:12px 14px;border:1px solid #ccd5df;border-radius:9px;font-size:15px;font-family:inherit}
+input[readonly],select:disabled{background:#f1f3f5;color:#333}
+.btn{border:none;padding:13px 25px;border-radius:9px;font-size:15px;font-weight:bold;cursor:pointer}
+.btn-primary{background:#102a43;color:white}
+.btn-primary:hover{background:#0b2033}
+.btn-success{background:#18794e;color:white}
+.progress-area{margin-bottom:20px}
+.progress-info{display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px}
+.progress-bar{width:100%;height:9px;background:#dce3ea;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:#102a43;transition:.3s}
+.section-heading{background:#102a43;color:white;border-radius:9px;padding:12px 15px;margin:26px 0 14px}
+.question{background:#f8fafc;border:1px solid #e0e6ed;border-radius:12px;padding:18px;margin-bottom:17px}
+.question-title{font-weight:bold;margin-bottom:13px;line-height:1.6}
+.pattern{background:#edf3f8;border:1px dashed #9fb2c5;border-radius:8px;padding:12px;margin:10px 0;text-align:center;font-weight:bold;font-size:19px;color:#102a43;overflow-wrap:anywhere}
+.question textarea{min-height:100px;resize:vertical}
+.notice{background:#fff8e5;border-left:4px solid #d4af37;padding:13px;border-radius:7px;font-size:13px}
+.page{display:none}
+.page.active{display:block}
+.result-box{text-align:center}
+.score{font-size:55px;font-weight:bold;color:#102a43;margin:10px 0}
+.result-detail{background:#f4f7fa;border-radius:12px;padding:18px;margin-top:20px}
+.result-detail p{margin:8px 0}
+.review-item{border:1px solid #dce3ea;border-radius:10px;padding:15px;margin-bottom:12px;overflow-wrap:anywhere}
+.correct{color:#18794e;font-weight:bold}
+.wrong{color:#c0392b;font-weight:bold}
+#warningOverlay,#lockOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:99999;align-items:center;justify-content:center;padding:20px}
+.security-box{background:white;width:100%;max-width:420px;border-radius:16px;padding:25px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.security-box h2{color:#102a43;margin-top:0}
+.security-box input{width:100%;padding:12px;margin:12px 0;text-align:center}
+.security-box button{border:none;background:#102a43;color:white;padding:12px 24px;border-radius:9px;font-weight:bold;cursor:pointer}
+#passwordError{display:none;color:#c0392b;margin-top:10px;font-size:14px}
+.small{font-size:12px;color:#64748b}
+@media(max-width:650px){
+ .container{margin-top:10px}
+ .brand{gap:8px;padding:15px 10px}
+ .logo-img{width:48px;height:48px}
+ .header-title h1{font-size:15px}
+ .header-title h2{font-size:13px}
+ .header-title p{font-size:10px}
+ .info-grid{grid-template-columns:1fr}
+ .card{padding:18px}
+ .pattern{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<div id="warningOverlay">
+  <div class="security-box">
+    <h2>⚠️ PERINGATAN</h2>
+    <p>Kamu telah berpindah dari halaman ujian.<br><br><b>Ini adalah peringatan pertama.</b><br>Silakan kembali ke halaman ujian.</p>
+    <button type="button" onclick="closeWarning()">KEMBALI KE UJIAN</button>
+  </div>
+</div>
+
+<div id="lockOverlay">
+  <div class="security-box">
+    <h2>🔒 UJIAN TERKUNCI</h2>
+    <p>Halaman ujian telah ditinggalkan lebih dari satu kali. Minta guru memasukkan kata sandi untuk melanjutkan.</p>
+    <input type="password" id="teacherPassword" placeholder="Password Guru" autocomplete="off">
+    <button type="button" onclick="unlockExam()">BUKA UJIAN</button>
+    <div id="passwordError">Password salah.</div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="header">
+    <div class="brand">
+      <img src="logo-lamongan.png" class="logo-img" alt="Logo Lamongan">
+      <div class="header-title">
+        <h1>ULANGAN HARIAN MATEMATIKA</h1>
+        <h2>BAB 3: POLA GAMBAR DAN POLA BILANGAN</h2>
+        <h3>SDN 1 SENDANGREJO</h3>
+        <p>TAHUN PELAJARAN 2026/2027</p>
+      </div>
+      <img src="logo-sekolah.png" class="logo-img" alt="Logo sekolah">
+    </div>
+  </div>
+
+  <div id="startPage" class="page active">
+    <div class="card welcome">
+      <h2>Selamat Datang, <span id="welcomeName">Peserta Didik!</span></h2>
+      <p>Silakan pilih nomor absen untuk memulai ulangan.</p>
+    </div>
+
+    <div class="card">
+      <div class="info-grid">
+        <div class="info-box"><strong>IV / B</strong><span>Kelas / Fase</span></div>
+        <div class="info-box"><strong>Matematika</strong><span>Mata Pelajaran</span></div>
+        <div class="info-box"><strong>15</strong><span>Isian Singkat</span></div>
+        <div class="info-box"><strong>5</strong><span>Uraian</span></div>
+      </div>
+
+      <div class="form-group">
+        <label for="absen">No. Absen</label>
+        <select id="absen" onchange="pilihAbsen()">
+          <option value="">-- Pilih No. Absen --</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="nama">Nama Lengkap</label>
+        <input type="text" id="nama" readonly placeholder="Nama akan muncul otomatis">
+      </div>
+
+      <div class="form-group">
+        <label for="kelas">Kelas / Fase</label>
+        <select id="kelas" disabled><option>IV / B</option></select>
+      </div>
+
+      <div class="form-group">
+        <label for="mapel">Mata Pelajaran</label>
+        <select id="mapel" disabled><option>Matematika</option></select>
+      </div>
+
+      <div class="notice">
+        <b>Petunjuk pengerjaan:</b>
+        <ul>
+          <li>Bacalah setiap soal dengan cermat.</li>
+          <li>Periksa kembali jawaban sebelum dikumpulkan.</li>
+        </ul>
+      </div>
+
+      <div style="text-align:center;margin-top:25px">
+        <button class="btn btn-primary" onclick="mulaiUjian()">MULAI ULANGAN</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="examPage" class="page">
+    <div class="card">
+      <div class="progress-area">
+        <div class="progress-info">
+          <span id="progressText">0 / 20 soal terjawab</span>
+          <span>Progress</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-box"><strong id="examStudent">-</strong><span>Nama Peserta</span></div>
+        <div class="info-box"><strong id="examNo">-</strong><span>No. Absen</span></div>
+      </div>
+
+      <form id="examForm">
+        <div class="section-heading">A. Isian Singkat — 15 Soal</div>
+        <p>Isilah dengan jawaban yang tepat. Perhatikan aturan pola dan informasi dalam soal.</p>
+
+        <div class="question">
+          <div class="question-title">1. Perhatikan pola bilangan berikut.</div>
+          <div class="pattern">7, 12, 17, 22, ..., ...</div>
+          Tuliskan dua bilangan berikutnya secara berurutan.
+          <input name="q1" type="text" placeholder="Petunjuk pengisian: .... dan ....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">2. Perhatikan pola bilangan berikut.</div>
+          <div class="pattern">150, 140, 130, 120, ..., ...</div>
+          Tuliskan dua bilangan berikutnya secara berurutan.
+          <input name="q2" type="text" placeholder="Petunjuk pengisian: .... dan ....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">3. Setiap bilangan dalam pola berikut diperoleh dengan mengalikan bilangan sebelumnya dengan 2.</div>
+          <div class="pattern">3, 6, 12, 24, ...</div>
+          Bilangan berikutnya adalah ....
+          <input name="q3" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">4. Perhatikan pola bilangan berikut.</div>
+          <div class="pattern">2, 6, 12, 20, 30, ...</div>
+          Jika aturan pola tetap, bilangan berikutnya adalah ....
+          <input name="q4" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">5. Perhatikan pola bilangan berikut.</div>
+          <div class="pattern">1, 4, 9, 16, 25, ...</div>
+          Bilangan berikutnya adalah ....
+          <input name="q5" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">6. Jika pola bilangan dimulai dari 5 dan setiap bilangan bertambah 4, maka bilangan pada urutan ke-8 adalah ....</div>
+          <input name="q6" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">7. Jika pola bilangan dimulai dari 3 dan bertambah 5 setiap langkah, maka bilangan pada urutan ke-10 adalah ....</div>
+          <input name="q7" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">8. Perhatikan pola gambar berikut.</div>
+          <div class="pattern">□ &nbsp; △ &nbsp; △ &nbsp; □ &nbsp; △ &nbsp; △ &nbsp; □ &nbsp; ...</div>
+          Bentuk apa yang tepat untuk melanjutkan pola tersebut?
+          <input name="q8" type="text" placeholder="Petunjuk pengisian: tuliskan nama bentuknya">
+        </div>
+
+        <div class="question">
+          <div class="question-title">9. Pola gambar tersusun dari titik. Gambar ke-1 memiliki 4 titik, gambar ke-2 memiliki 7 titik, dan gambar ke-3 memiliki 10 titik. Titik yang terdapat pada gambar ke-9 sebanyak ....</div>
+          <input name="q9" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">10. Perhatikan pola bilangan berikut.</div>
+          <div class="pattern">2, 5, 11, 23, ...</div>
+          Setiap bilangan diperoleh dengan mengalikan bilangan sebelumnya dengan 2 lalu menambah 1. Bilangan berikutnya adalah ....
+          <input name="q10" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">11. <b>Panitia kegiatan pentas seni sedang menata kursi. Baris pertama berisi 6 kursi. Setiap baris berikutnya berisi 4 kursi lebih banyak daripada baris sebelumnya. Berapa kursi pada baris ke-8?</div>
+          <input name="q11" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">12. <b>Pada hari pertama, Azka menabung Rp2.000. Setiap hari berikutnya, uang yang ia tabung bertambah Rp3.000 dari hari sebelumnya. Berapa uang yang ditabung Azka pada hari ke-7?</div>
+          <input name="q12" type="text" placeholder="Petunjuk pengisian: jawab dalam rupiah, contoh penulisan ada pada soal">
+        </div>
+
+        <div class="question">
+          <div class="question-title">13. <b>Gambar pertama dibuat dari 5 batang korek api, gambar kedua 8 batang, dan gambar ketiga 11 batang. Jika setiap gambar bertambah 3 batang, berapa batang yang diperlukan untuk gambar ke-12?</div>
+          <input name="q13" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">14. Perhatikan dua pola berikut.</div>
+          <div class="pattern">Pola A: 3, 7, 11, 15, ...<br>Pola B: 3, 6, 12, 24, ...</div>
+          Berapa selisih bilangan pada urutan ke-5 Pola B dan urutan ke-5 Pola A?
+          <input name="q14" type="text" placeholder="....">
+        </div>
+
+        <div class="question">
+          <div class="question-title">15. <b>Gambar ke-1 terdiri atas 2 segitiga, gambar ke-2 terdiri atas 5 segitiga, dan gambar ke-3 terdiri atas 8 segitiga. Jika pola bertambah dengan aturan yang sama, berapa segitiga pada gambar ke-10?</div>
+          <input name="q15" type="text" placeholder="....">
+        </div>
+
+        <div class="section-heading">B. Uraian — 5 Soal</div>
+        <p>Kerjakan dengan langkah penyelesaian dan alasan yang jelas.</p>
+
+        <div class="question">
+          <div class="question-title">16. Perhatikan pola bilangan 8, 13, 18, 23, ...</div>
+          <p>a. Tuliskan dua bilangan berikutnya.</p>
+          <p>b. Jelaskan aturan pola tersebut.</p>
+          <textarea name="q16" rows="4" placeholder="Petunjuk pengisian: 
+        a. .... dan ....
+        b. jelaskan cara berpikirmu"></textarea>
+        </div>
+
+        <div class="question">
+          <div class="question-title">17. Sebuah pola gambar tersusun dari titik. Gambar ke-1 memiliki 3 titik, gambar ke-2 memiliki 6 titik, dan gambar ke-3 memiliki 9 titik.</div>
+          <p>a. Berapa titik pada gambar ke-7?</p>
+          <p>b. Jelaskan cara menentukan jumlah titik tanpa menggambar semua gambar.</p>
+          <textarea name="q17" rows="4" placeholder="Petunjuk pengisian: 
+        a. ....
+        b. jelaskan cara berpikirmu"></textarea>
+        </div>
+
+        <div class="question">
+          <div class="question-title">18. Perhatikan pola bilangan 100, 93, 86, 79, ...</div>
+          <p>a. Tentukan bilangan pada urutan ke-8.</p>
+          <p>b. Jelaskan aturan pola yang kamu temukan.</p>
+          <textarea name="q18" rows="4" placeholder="Petunjuk pengisian: 
+        a. ....
+        b. jelaskan cara berpikirmu"></textarea>
+        </div>
+
+        <div class="question">
+          <div class="question-title">19. <b>Bu Putri menyusun meja untuk kegiatan kelas. Baris pertama terdiri atas 10 meja, baris kedua 14 meja, dan baris ketiga 18 meja. Banyak meja pada setiap baris bertambah dengan aturan yang sama.</div>
+          <p>a. Berapa meja pada baris ke-9?</p>
+          <p>b. Jika tersedia 40 meja, apakah cukup untuk mengisi baris ke-9? Jelaskan.</p>
+          <textarea name="q19" rows="4" placeholder="Petunjuk pengisian: 
+        a. ....
+        b. cukup atau tidak cukup. jelaskan cara berpikirmu"></textarea>
+        </div>
+
+        <div class="question">
+          <div class="question-title">20. Perhatikan dua pola bilangan berikut.</div>
+          <div class="pattern">Pola A: 4, 8, 12, 16, ...<br>Pola B: 4, 8, 16, 32, ...</div>
+          <p>a. Tuliskan aturan masing-masing pola.</p>
+          <p>b. Tentukan bilangan pada urutan ke-5 setiap pola.</p>
+          <p>c. Mengapa hasil kedua pola berbeda meskipun dimulai dari bilangan yang sama?</p>
+          <textarea name="q20" rows="5" placeholder="Petunjuk pengisian: 
+        a. Pola A bertambah berapa dan pola B bertambah berapa
+        b. Urutan ke-5 pada pola A berapa, urutan ke-5 pada pola B berapa
+        c. Karena ...."></textarea>
+        </div>
+
+
+
+        <div style="text-align:center;margin-top:30px">
+          <button type="button" class="btn btn-success" onclick="kumpulkanUjian()">KUMPULKAN JAWABAN</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="resultPage" class="page">
+    <div class="card result-box">
+      <h2>Ulangan Selesai</h2>
+      <p id="resultName"></p>
+      <div class="score" id="finalScore">0</div>
+      <p>Nilai</p>
+      <div class="result-detail">
+        <p><strong>Isian benar:</strong> <span id="isianBenar"></span> / 15</p>
+        <p><strong>Nilai isian:</strong> <span id="nilaiIsian"></span> / 60</p>
+        <p><strong>Nilai uraian:</strong> <span id="nilaiUraian"></span> / 40</p>
+      </div>
+
+    <div class="card">
+      <h2>Review Jawaban</h2>
+      <div id="review"></div>
+      <button class="btn btn-primary" onclick="window.location.reload()">SELESAI</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xpppjjka";
+
+const siswa = {
+  "1":"Achmad Naufal Putra Yulianto",
+  "2":"Aldo Syahrul Ramdhan",
+  "3":"Danish Raffa Faizan",
+  "4":"Fabian Arrafif",
+  "5":"Meli Anggraini",
+  "6":"Muhammad Daffa Al Baihaqi",
+  "7":"Nadhira Azkadina Putri",
+  "8":"Nur Azizah",
+  "9":"Raffasya Ali Alfarizqi",
+  "10":"Assyfa Putri Zahrany"
+};
+
+const kunciIsian = {
+  q1:{answer:"27 dan 32",accepted:["27,32","27 dan 32","27 32"]},
+  q2:{answer:"110 dan 100",accepted:["110,100","110 dan 100","110 100"]},
+  q3:{answer:"48",accepted:["48"]},
+  q4:{answer:"42",accepted:["42"]},
+  q5:{answer:"36",accepted:["36"]},
+  q6:{answer:"33",accepted:["33"]},
+  q7:{answer:"48",accepted:["48"]},
+  q8:{answer:"Segitiga",accepted:["segitiga","△"]},
+  q9:{answer:"28 titik",accepted:["28","28 titik"]},
+  q10:{answer:"47",accepted:["47"]},
+  q11:{answer:"34 kursi",accepted:["34","34 kursi"]},
+  q12:{answer:"Rp20.000",accepted:["20000","20.000","rp20000","rp 20.000","Rp 20000","Rp 20.000"]},
+  q13:{answer:"38 batang",accepted:["38","38 batang"]},
+  q14:{answer:"29",accepted:["29"]},
+  q15:{answer:"29 segitiga",accepted:["29","29 segitiga"]}
+};
+
+const rubrikUraian = {
+  q16:{
+    answer:"28 dan 33; setiap bilangan bertambah 5.",
+    groups:[
+      {points:3,terms:["28"]},
+      {points:3,terms:["33"]},
+      {points:2,terms:["bertambah 5","tambah 5","ditambah 5","selisih 5","selisihnya 5"]}
+    ]
+  },
+  q17:{
+    answer:"Gambar ke-7 memiliki 21 titik. Jumlah titik bertambah 3 setiap gambar; dapat dihitung dengan nomor gambar dikali 3.",
+    groups:[
+      {points:4,terms:["21 titik","21"]},
+      {points:4,terms:["bertambah 3","tambah 3","dikali 3","kali 3","nomor gambar dikali 3","kelipatan 3"]}
+    ]
+  },
+  q18:{
+    answer:"Urutan ke-8 adalah 51. Setiap bilangan dikurangi 7.",
+    groups:[
+      {points:4,terms:["51"]},
+      {points:4,terms:["dikurangi 7","kurang 7","berkurang 7","selisih 7","dikurang 7"]}
+    ]
+  },
+  q19:{
+    answer:"Baris ke-9 berisi 42 meja. Karena 40 meja kurang dari 42, meja tidak cukup; kurang 2 meja.",
+    groups:[
+      {points:3,terms:["42 meja","42"]},
+      {points:3,terms:["tidak cukup","kurang","belum cukup"]},
+      {points:2,terms:["kurang 2","2 meja","40 dari 42","selisih 2"]}
+    ]
+  },
+  q20:{
+    answer:"Pola A bertambah 4 dan urutan ke-5 adalah 20. Pola B dikali 2 dan urutan ke-5 adalah 64. Hasil berbeda karena aturan kedua pola berbeda.",
+    groups:[
+      {points:2,terms:["bertambah 4","tambah 4","ditambah 4","selisih 4"]},
+      {points:2,terms:["dikali 2","kali 2","dikalikan 2","dua kali"]},
+      {points:2,terms:["20"]},
+      {points:2,terms:["64"]}
+    ]
+  }
+};
+
+let examStarted = false;
+let examSubmitted = false;
+let warningCount = 0;
+let examLocked = false;
+const TEACHER_PASSWORD = "najaannaziliizzulazka";
+
+function pilihAbsen(){
+  const no = document.getElementById("absen").value;
+  document.getElementById("nama").value = no ? siswa[no] : "";
+  document.getElementById("welcomeName").textContent = no ? siswa[no] : "Peserta Didik!";
+}
+
+function mulaiUjian(){
+  const no = document.getElementById("absen").value;
+  if(!no){
+    alert("Silakan pilih nomor absen terlebih dahulu.");
+    return;
+  }
+  if(!confirm("Mulai ulangan atas nama " + siswa[no] + "?")) return;
+
+  document.getElementById("examStudent").textContent = siswa[no];
+  document.getElementById("examNo").textContent = no;
+  document.getElementById("startPage").classList.remove("active");
+  document.getElementById("examPage").classList.add("active");
+  examStarted = true;
+  updateProgress();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function normalisasi(teks){
+  return String(teks || "").toLowerCase().trim().replace(/\s+/g," ");
+}
+
+function angkaNormal(teks){
+  return String(teks || "").replace(/\./g,"").replace(/,/g," ").replace(/\s+/g," ").trim();
+}
+
+function cekIsian(jawaban,kunci){
+  const j = normalisasi(jawaban);
+  const jAngka = angkaNormal(jawaban);
+  return kunci.accepted.some(item =>
+    j === normalisasi(item) || jAngka === angkaNormal(item)
+  );
+}
+
+function mengandungAngkaAtauFrasa(jawaban,term){
+  const j = normalisasi(jawaban);
+  const t = normalisasi(term);
+
+  if(/^\d+$/.test(t)){
+    const re = new RegExp("(^|[^0-9])"+t+"([^0-9]|$)");
+    return re.test(j.replace(/\./g," "));
+  }
+  return j.includes(t);
+}
+
+function cekUraian(jawaban,rubrik){
+  let poin = 0;
+  rubrik.groups.forEach(group=>{
+    if(group.terms.some(term=>mengandungAngkaAtauFrasa(jawaban,term))){
+      poin += group.points;
+    }
+  });
+  return Math.min(poin,8);
+}
+
+function updateProgress(){
+  let answered = 0;
+  for(let i=1;i<=20;i++){
+    const el = document.querySelector(`[name="q${i}"]`);
+    if(el && el.value.trim() !== "") answered++;
+  }
+  document.getElementById("progressText").textContent = answered + " / 20 soal terjawab";
+  document.getElementById("progressFill").style.width = (answered/20*100) + "%";
+}
+
+document.addEventListener("input",updateProgress);
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g, c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[c]));
+}
+
+async function kumpulkanUjian(){
+  if(examSubmitted) return;
+
+  const kosong = [];
+  for(let i=1;i<=20;i++){
+    const el = document.querySelector(`[name="q${i}"]`);
+    if(!el || !el.value.trim()) kosong.push(i);
+  }
+
+  if(kosong.length && !confirm("Masih ada "+kosong.length+" soal kosong. Tetap kumpulkan jawaban?")) return;
+  if(!confirm("Yakin ingin mengumpulkan jawaban? Jawaban tidak dapat diubah setelah dikumpulkan.")) return;
+
+  const no = document.getElementById("absen").value;
+  const nama = siswa[no];
+  let benar = 0;
+  let reviewHTML = "";
+  const jawabanTerkirim = {};
+
+  for(let i=1;i<=15;i++){
+    const value = document.querySelector(`[name="q${i}"]`).value.trim();
+    const kunci = kunciIsian["q"+i];
+    const betul = cekIsian(value,kunci);
+
+    if(betul) benar++;
+
+    jawabanTerkirim["soal_"+i] = value;
+    reviewHTML += `
+      <div class="review-item">
+        <strong>Soal ${i}</strong>
+        <p>Jawabanmu: ${escapeHTML(value || "Tidak dijawab")}</p>
+        <p class="${betul?"correct":"wrong"}">${betul?"✓ Benar":""}</p>
+      </div>`;
+  }
+
+  const nilaiIsian = Math.round((benar/15)*60*100)/100;
+  let totalUraian = 0;
+
+  for(let i=16;i<=20;i++){
+    const value = document.querySelector(`[name="q${i}"]`).value.trim();
+    const rubrik = rubrikUraian["q"+i];
+    const poin = cekUraian(value,rubrik);
+
+    totalUraian += poin;
+    jawabanTerkirim["soal_"+i] = value;
+
+    reviewHTML += `
+      <div class="review-item">
+        <strong>Soal ${i}</strong>
+        <p>Jawabanmu: ${escapeHTML(value || "Tidak dijawab")}</p>
+        <p>Nilai: <strong>${poin}/8</strong></p>
+      </div>`;
+  }
+
+  const nilaiAkhir = Math.round((nilaiIsian + totalUraian)*100)/100;
+  examSubmitted = true;
+
+  document.getElementById("examPage").classList.remove("active");
+  document.getElementById("resultPage").classList.add("active");
+  document.getElementById("resultName").textContent = nama + " • No. Absen " + no;
+  document.getElementById("finalScore").textContent = nilaiAkhir;
+  document.getElementById("isianBenar").textContent = benar;
+  document.getElementById("nilaiIsian").textContent = nilaiIsian;
+  document.getElementById("nilaiUraian").textContent = totalUraian;
+  document.getElementById("review").innerHTML = reviewHTML;
+
+  window.scrollTo({top:0,behavior:"smooth"});
+
+  try{
+    const response = await fetch(FORMSPREE_ENDPOINT,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Accept":"application/json"
+      },
+      body:JSON.stringify({
+        judul:"Ulangan Harian Matematika",
+        nama_siswa:nama,
+        no_absen:no,
+        kelas_fase:"IV / B",
+        mata_pelajaran:"Matematika",
+        materi:"Pola Gambar dan Pola Bilangan",
+        tahun_pelajaran:"2026/2027",
+        isian_benar:benar+"/15",
+        nilai_isian:nilaiIsian,
+        nilai_uraian:totalUraian+"/40",
+        nilai:nilaiAkhir,
+        jawaban:JSON.stringify(jawabanTerkirim)
+      })
+    });
+
+    if(!response.ok) console.warn("Data belum berhasil dikirim ke Formspree.");
+  }catch(error){
+    console.warn("Pengiriman Formspree gagal:",error);
+  }
+}
+
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden && examStarted && !examSubmitted && !examLocked){
+    warningCount++;
+
+    if(warningCount === 1){
+      document.getElementById("warningOverlay").style.display = "flex";
+    }else{
+      examLocked = true;
+      document.getElementById("lockOverlay").style.display = "flex";
+    }
+  }
+});
+
+function closeWarning(){
+  document.getElementById("warningOverlay").style.display = "none";
+}
+
+function unlockExam(){
+  const input = document.getElementById("teacherPassword");
+  const error = document.getElementById("passwordError");
+
+  if(input.value.trim() === TEACHER_PASSWORD){
+    examLocked = false;
+    warningCount = 0;
+    document.getElementById("lockOverlay").style.display = "none";
+    input.value = "";
+    error.style.display = "none";
+  }else{
+    error.style.display = "block";
+    input.value = "";
+    input.focus();
+  }
+}
+
+document.addEventListener("keydown",function(e){
+  if(e.key === "Enter" && document.getElementById("lockOverlay").style.display === "flex"){
+    e.preventDefault();
+    unlockExam();
+  }
+});
+</script>
+</body>
+</html>
